@@ -12,32 +12,6 @@ import { atomDark } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import { useTheme } from '../contexts/ThemeContext';
 import { cn } from '../lib/utils';
 
-function levenshteinDistance(left: string, right: string) {
-  if (!left.length) return right.length;
-  if (!right.length) return left.length;
-
-  const previous = Array.from({ length: right.length + 1 }, (_, index) => index);
-  const current = new Array(right.length + 1).fill(0);
-
-  for (let i = 1; i <= left.length; i++) {
-    current[0] = i;
-    for (let j = 1; j <= right.length; j++) {
-      const substitutionCost = left[i - 1] === right[j - 1] ? 0 : 1;
-      current[j] = Math.min(
-        previous[j] + 1,
-        current[j - 1] + 1,
-        previous[j - 1] + substitutionCost,
-      );
-    }
-    for (let j = 0; j <= right.length; j++) {
-      previous[j] = current[j];
-    }
-  }
-
-  return previous[right.length];
-}
-
-
 export const QuantumIDE = () => {
   const { theme } = useTheme();
   const starterScript = `print("Hello, Quantum!")`;
@@ -190,7 +164,6 @@ srv.start();`
 
     measurer.textContent = currentLineTextBeforeCaret;
     const caretX = measurer.offsetWidth;
-    const editorRect = editor.getBoundingClientRect();
 const scrollWidth = editor.scrollWidth;
 const clientWidth = editor.clientWidth;
 
@@ -430,10 +403,10 @@ if (caretAbsoluteX > visibleRight - bufferX) {
 
         <div className={cn(
           "bg-white dark:bg-[#0d1117] rounded-2xl border border-black/10 dark:border-white/10 overflow-hidden shadow-[0_0_50px_-12px_rgba(0,0,0,0.1)] dark:shadow-[0_0_50px_-12px_rgba(6,182,212,0.15)] flex flex-col transition-all duration-500",
-          isFullScreen ? "fixed inset-0 z-[100] rounded-none h-screen" : "h-[600px] md:h-[800px]"
+          isFullScreen ? "fixed inset-0 z-100 rounded-none h-screen" : "h-150 md:h-200"
         )}>
           {/* Header */}
-          <div className="flex items-center justify-between px-4 md:px-6 py-3 bg-[#f8fafc] dark:bg-[#161b22] border-b border-black/10 dark:border-white/10">
+          <div className="flex items-center justify-between px-4 md:px-6 py-3 bg-quantum-light dark:bg-[#161b22] border-b border-black/10 dark:border-white/10">
             <div className="flex items-center gap-4 md:gap-6">
               <motion.button 
                 onClick={() => setIsSidebarOpen(!isSidebarOpen)}
@@ -539,7 +512,7 @@ if (caretAbsoluteX > visibleRight - bufferX) {
           <div className="flex flex-1 overflow-hidden relative">
             {/* Sidebar */}
             <div className={cn(
-              "absolute md:relative inset-y-0 left-0 z-20 w-64 bg-[#f8fafc] dark:bg-[#0d1117] border-r border-black/10 dark:border-white/10 flex flex-col transition-all duration-300 shadow-2xl md:shadow-none",
+              "absolute md:relative inset-y-0 left-0 z-20 w-64 bg-quantum-light dark:bg-[#0d1117] border-r border-black/10 dark:border-white/10 flex flex-col transition-all duration-300 shadow-2xl md:shadow-none",
               isSidebarOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0 md:w-0 md:opacity-0"
             )}>
               <div className="p-4 flex items-center justify-between border-b border-black/5 dark:border-white/5">
@@ -620,7 +593,7 @@ if (caretAbsoluteX > visibleRight - bufferX) {
                   {/* Line Numbers */}
                   <div 
                     ref={lineNumRef}
-                    className="w-10 md:w-14 bg-[#f8fafc] dark:bg-[#0d1117] border-r border-black/5 dark:border-white/5 flex flex-col items-end pt-4 md:pt-5 pr-2 md:pr-3 select-none font-mono text-[10px] md:text-[11px] text-black/20 dark:text-white/20 overflow-hidden"
+                    className="w-10 md:w-14 bg-quantum-light dark:bg-[#0d1117] border-r border-black/5 dark:border-white/5 flex flex-col items-end pt-4 md:pt-5 pr-2 md:pr-3 select-none font-mono text-[10px] md:text-[11px] text-black/20 dark:text-white/20 overflow-hidden"
                   >
                     {lineNumbers.map(n => (
                       <div key={n} className="h-[19.2px] md:h-[22.4px] leading-[19.2px] md:leading-[22.4px] flex items-center">
@@ -686,7 +659,7 @@ if (caretAbsoluteX > visibleRight - bufferX) {
               </div>
               
               {/* Terminal Section (Replaced inner mapped output with QuantumTerminal) */}
-              <div className="h-40 md:h-56 bg-[#f8fafc] dark:bg-black border-t border-black/10 dark:border-white/10 flex flex-col transition-colors duration-300">
+              <div className="h-40 md:h-56 bg-quantum-light dark:bg-black border-t border-black/10 dark:border-white/10 flex flex-col transition-colors duration-300">
                 <div className="px-4 md:px-6 py-2 bg-black/5 dark:bg-white/5 border-b border-black/5 dark:border-white/5 flex items-center justify-between">
                   <div className="flex items-center gap-2">
                     <Terminal className="w-3.5 h-3.5 text-cyan-500" />
@@ -768,7 +741,7 @@ if (caretAbsoluteX > visibleRight - bufferX) {
 
       {/* Create File Modal */}
       {isCreateModalOpen && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/60 backdrop-blur-sm p-6">
+        <div className="fixed inset-0 z-100 flex items-center justify-center bg-black/60 backdrop-blur-sm p-6">
           <div className="bg-white dark:bg-zinc-900 border border-black/10 dark:border-white/10 rounded-2xl p-6 w-full max-w-md shadow-2xl">
             <h3 className="text-xl font-bold text-black dark:text-white mb-4">Create New File</h3>
             <input 
