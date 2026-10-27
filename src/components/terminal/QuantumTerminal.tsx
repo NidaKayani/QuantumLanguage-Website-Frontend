@@ -661,7 +661,7 @@ const QuantumTerminal =  forwardRef<QuantumTerminalHandle, QuantumTerminalProps>
   }, [theme]);
 
   return (
-    <div className="relative h-full w-full p-[2px] overflow-hidden rounded-md">
+    <div className="relative h-full w-full p-0.5 overflow-hidden rounded-md">
       <div
         className={cn(
           "pointer-events-none absolute -inset-[40%] transition-opacity duration-300",
