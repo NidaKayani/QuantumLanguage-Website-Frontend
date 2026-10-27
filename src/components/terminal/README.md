@@ -15,9 +15,14 @@ interface QuantumTerminalProps {
   files: Record<string, string>;   // open tabs -> content, used for Tab-completion
   activeFile?: string;             // shown in the prompt, e.g. "[hello.sa] $"
   onRun?: (file: string) => void;  // fired when user types `quantum <file>` or `qrun <file>`
+  onRunningChange?: (running: boolean) => void; // a program started / exited
   theme?: "dark" | "light";        // synced from the IDE's ThemeContext
 }
 ```
+
+The ref handle (`QuantumTerminalHandle`) is `runFile(file)`, `stop()` and `clear()`. The IDE's RUN/STOP button uses `runFile`/`stop` and follows `onRunningChange`, so it shows STOP exactly as long as the program is alive.
+
+While a program is running, keystrokes are its stdin rather than a command line: they're echoed locally and sent a line at a time over the socket (`{ type: "input" }`), and `Ctrl+C` stops it. The backend reports the exit (`process_completion` with `exitCode` and `stage`: `"compile"`, `"runtime"` or `null`), which is when the prompt comes back.
 
 If this needs to change for any reason, please talk to me first — Member 4 and probably Member 2/3 depend on it too.
 

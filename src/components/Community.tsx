@@ -1,5 +1,6 @@
 import React from 'react';
-import { Github as GithubIcon, Globe, Terminal } from 'lucide-react';
+import { Globe, Terminal } from 'lucide-react';
+import { Github as GithubIcon } from './icons/BrandIcons';
 import { env } from '../config/env';
 
 export const Community = () => (

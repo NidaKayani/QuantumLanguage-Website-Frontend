@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import { MessageSquare, Send, X, Bot, Sparkles, AlertCircle, Copy, Check, Trash2, Square, Menu, Plus, ThumbsUp, ThumbsDown, MoreVertical, Pin, Pencil } from 'lucide-react';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { atomDark } from 'react-syntax-highlighter/dist/esm/styles/prism';
-import Lottie from 'lottie-react';
+import { LottieSvg as Lottie } from 'lottie-react';
 import { useTheme } from '../contexts/ThemeContext';
 import { cn } from '../lib/utils';
 import { useDraggablePosition } from '../hooks/useDraggablePosition';
@@ -631,7 +631,8 @@ Select a quick prompt below or type your questions directly!`;
                 </motion.button>
                 <div className="relative w-10 h-10 flex items-center justify-center">
                   <Lottie
-                    animationData={liveChatbotAnimation}
+                    src={liveChatbotAnimation}
+                    autoplay
                     loop={true}
                     className="w-full h-full object-contain pointer-events-none"
                   />
@@ -684,7 +685,8 @@ Select a quick prompt below or type your questions directly!`;
                     <div className="flex items-center gap-1.5">
                       <div className="w-6 h-6">
                         <Lottie
-                          animationData={ligaHistoryAnimation}
+                          src={ligaHistoryAnimation}
+                          autoplay
                           loop={true}
                           className="w-full h-full pointer-events-none"
                         />
@@ -1144,7 +1146,8 @@ Select a quick prompt below or type your questions directly!`;
               className="w-full h-full flex items-center justify-center relative"
             >
               <Lottie
-                animationData={liveChatbotAnimation}
+                src={liveChatbotAnimation}
+                autoplay
                 loop={true}
                 className="w-full h-full object-contain pointer-events-none"
               />

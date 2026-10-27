@@ -5,7 +5,7 @@ import React from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { 
   Terminal, Cpu, Maximize2, Minimize2, Copy, Download, Save, Check, Play, 
-  Folder, Plus, FileCode, Trash2, Menu, X 
+  Folder, Plus, FileCode, Trash2, Menu, X, Square
 } from 'lucide-react';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { atomDark } from 'react-syntax-highlighter/dist/esm/styles/prism';
@@ -356,10 +356,11 @@ if (caretAbsoluteX > visibleRight - bufferX) {
     setTimeout(() => setIsSaving(false), 1000);
   };
 
-  const runCode = async () => {
-    setIsExecuting(true);
-    terminalRef.current?.runFile(activeFile);
-    setTimeout(() => setIsExecuting(false), 500);
+  // RUN starts the active file; while it runs the same button stops it.
+  // isExecuting follows the terminal, which knows when the program exits.
+  const runCode = () => {
+    if (isExecuting) terminalRef.current?.stop();
+    else terminalRef.current?.runFile(activeFile);
   };
 
   const createFile = () => {
@@ -506,16 +507,17 @@ if (caretAbsoluteX > visibleRight - bufferX) {
                 <div className="w-px h-4 bg-black/10 dark:bg-white/10 mx-1 hidden sm:block" />
                 <button 
                   onClick={runCode}
-                  disabled={isExecuting}
                   className={cn(
-                    "flex items-center gap-2 px-4 md:px-6 py-2 rounded-lg text-[10px] md:text-xs font-bold transition-all shadow-lg shadow-cyan-500/20",
-                    isExecuting 
-                      ? "bg-black/10 dark:bg-white/10 text-black/40 dark:text-white/40 cursor-not-allowed" 
-                      : "bg-cyan-500 text-black hover:bg-cyan-400 active:scale-95 hover:shadow-cyan-500/40"
+                    "flex items-center gap-2 px-4 md:px-6 py-2 rounded-lg text-[10px] md:text-xs font-bold transition-all shadow-lg",
+                    isExecuting
+                      ? "bg-red-500 text-white shadow-red-500/20 hover:bg-red-400 active:scale-95"
+                      : "bg-cyan-500 text-black shadow-cyan-500/20 hover:bg-cyan-400 active:scale-95 hover:shadow-cyan-500/40"
                   )}
                 >
-                  <Play className={cn("w-3 h-3 fill-current", isExecuting ? "animate-pulse" : "")} />
-                  {isExecuting ? 'RUNNING...' : 'RUN SCRIPT'}
+                  {isExecuting
+                    ? <Square className="w-3 h-3 fill-current animate-pulse" />
+                    : <Play className="w-3 h-3 fill-current" />}
+                  {isExecuting ? 'STOP' : 'RUN SCRIPT'}
                 </button>
                 <div className="w-px h-4 bg-black/10 dark:bg-white/10 mx-1 hidden sm:block" />
                 <button 
@@ -710,7 +712,12 @@ if (caretAbsoluteX > visibleRight - bufferX) {
                     overscrollBehavior: 'contain',
                   }}
                 >
-                  <QuantumTerminal ref={terminalRef} files={files} activeFile={activeFile} />
+                  <QuantumTerminal
+                    ref={terminalRef}
+                    files={files}
+                    activeFile={activeFile}
+                    onRunningChange={setIsExecuting}
+                  />
                 </div>
 
                 {/* ORIGINAL FALLBACK OUTPUT (Commented out to preserve official code)

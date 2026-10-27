@@ -7,13 +7,13 @@ import {
   Terminal, 
   BookOpen, 
   Download, 
-  Github as GithubIcon,
   Search,
   ArrowRight,
   Sparkles,
   History,
   HelpCircle
 } from 'lucide-react';
+import { Github as GithubIcon } from './icons/BrandIcons';
 import { useGlobalSearchNavigation } from '../hooks/useGlobalSearchNavigation';
 import { env } from '../config/env';
 
