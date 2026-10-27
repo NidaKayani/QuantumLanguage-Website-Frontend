@@ -2,11 +2,11 @@ import React from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { 
-  Github as GithubIcon, 
   Search,
   Menu,
   X
 } from 'lucide-react';
+import { Github as GithubIcon } from './icons/BrandIcons';
 import { ThemeToggle } from './ThemeToggle';
 import { CommandPalette } from './CommandPalette';
 import { env } from '../config/env';

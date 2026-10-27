@@ -7,13 +7,12 @@ import {
   User, 
   Calendar, 
   Share2, 
-  Twitter, 
-  Linkedin, 
   Link2, 
   Check, 
   ArrowRight, 
   Mail 
 } from 'lucide-react';
+import { Linkedin, Twitter } from './icons/BrandIcons';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { atomDark } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import { useTheme } from '../contexts/ThemeContext';

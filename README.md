@@ -328,6 +328,8 @@ The IDE's output terminal (`src/components/terminal/QuantumTerminal.tsx`) suppor
 
 The prompt shows the active file (e.g. `[hello.sa] $`) when one is open, and falls back to `$` otherwise. Scrollback is 5000 lines, and multi-line pastes are split and submitted as separate commands. When the terminal has keyboard focus, an animated glowing border rotates around the whole box; it fades out on blur.
 
+While a program runs, the terminal is its console: typed text is echoed and each line is sent to the program's stdin when you press `Enter` (so `std::cin`, `input()` and `gets` work), `Backspace` edits the pending line, and `Ctrl+C` or the editor's **STOP** button ends the program. When it exits, the terminal reports how (`Compilation failed.`, `Process exited with code N.`, `Process stopped.`) and the prompt comes back. `.cpp` and `.c` files are checked as strict C/C++, so code g++/gcc would reject fails with a gcc-style error naming the file (`main.cpp:4:5: error: ...`); only `.sa` files accept Quantum's mixed syntax.
+
 Note: `Ctrl+W` is the usual shell binding for "delete word", but browsers reserve it to close the current tab and never deliver it to the page — `Ctrl+Backspace` is used instead.
 
 ---
